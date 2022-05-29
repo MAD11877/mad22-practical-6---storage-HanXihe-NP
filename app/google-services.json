@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "613402307496",
+    "project_id": "mad-exercise-2-han-xihe",
+    "storage_bucket": "mad-exercise-2-han-xihe.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613402307496:android:b8cab86fabd70a5ba94b9d",
+        "android_client_info": {
+          "package_name": "com.np.madexercise2hanxihe"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613402307496-1f0b7mrnhj8u66bglbl627qvrb933fme.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC9w1pr59m_LqKypLx9B7AlyO0K9Lwb-5U"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613402307496-1f0b7mrnhj8u66bglbl627qvrb933fme.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
