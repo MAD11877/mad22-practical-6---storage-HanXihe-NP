@@ -30,17 +30,14 @@ public class ListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_list);
 
-        // Login for Practical 6 challenge
-
-
-
-
-
         // random user generator is also reused for SQLite database data of users
         // database handling for practical 6
 
         MyDBHandler db = new MyDBHandler(this);
         for(int i=1; i<21; i++){
+            if(db.getUsers().size()==0){
+                break;
+            }
             User user = new User();
 
             int randInt = ThreadLocalRandom.current().nextInt(-999999999, 999999999 + 1);
@@ -58,6 +55,7 @@ public class ListActivity extends AppCompatActivity {
             // db insert data for practical 6 to fill up database
             db.insertUser(user);
         }
+
         ArrayList<User> userData = db.getUsers();
 
         RecyclerView rv = findViewById(R.id.recyclerView);

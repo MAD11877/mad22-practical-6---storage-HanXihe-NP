@@ -31,10 +31,10 @@ public class MyDBHandler extends SQLiteOpenHelper {
         // use 1 or 0 in Followed_INTEGER
         int followedInt = 0;
 
-        Cursor cursor = db.rawQuery("SELECT * FROM User", null);
-
-        if(u.getFollowed()){
-            // if the user is followed
+        if(u.getFollowed() == false){
+            followedInt = 0;
+        }
+        else{
             followedInt = 1;
         }
         // only executes db statement if there is an entry
@@ -44,9 +44,8 @@ public class MyDBHandler extends SQLiteOpenHelper {
                 + "\", \"" + followedInt
                 + "\")");
 
-        db.close();
-        cursor.close();
-    }
+            db.close();
+        }
 
     public ArrayList<User> getUsers(){
         SQLiteDatabase db = this.getWritableDatabase();
@@ -65,19 +64,17 @@ public class MyDBHandler extends SQLiteOpenHelper {
             int newIDint = Integer.parseInt(newId);
             u.setID(newIDint);
 
-       // control structure to determine bool for followed
-       if(newFollowed2 == 1){
-           u.setFollowed(true);
+            // control structure to determine bool for followed
+            if(newFollowed2 == 1){
+            u.setFollowed(true);
             }
             else{
                 u.setFollowed(false);
             }
-
              getUsersList.add(u);
         }
-        cursor.close();
 
-        db.close();
+        cursor.close();
         return getUsersList;
     }
 
@@ -101,5 +98,6 @@ public class MyDBHandler extends SQLiteOpenHelper {
                     " WHERE Id_TEXT = " +
                     userId);
         }
+        db.close();
     }
 }

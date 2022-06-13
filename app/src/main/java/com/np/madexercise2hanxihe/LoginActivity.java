@@ -1,66 +1,65 @@
 package com.np.madexercise2hanxihe;
 
-import static android.content.ContentValues.TAG;
-
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
+import android.widget.EditText;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.sql.Ref;
 
 public class LoginActivity extends AppCompatActivity {
-
-    // THIS IS NOT WORKING LOL IDK HOW TO DO IT
-
-
-    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        FirebaseAuth mAuth;
-        // ...
-        // Initialize Firebase Auth
-        mAuth = FirebaseAuth.getInstance();
+        // Practical 6 Firebase Challenge fix
+        // get instance, see teams video as ref
+        FirebaseDatabase database = FirebaseDatabase.getInstance("https://mad-exercise-2-han-xihe-default-rtdb.asia-southeast1.firebasedatabase.app");
+        DatabaseReference myRef = database.getReference("Users");
 
+        EditText usernameInput = findViewById(R.id.editTextTextEmailAddress);
+        EditText passwordInput = findViewById(R.id.editTextTextPassword);
 
+        // Reading the user account data inside the database (path: Users/mad)
+        ((Button)findViewById(R.id.loginButton)).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // Read input from layout and convert it into string
+                String username = usernameInput.getText().toString();
+                String password = passwordInput.getText().toString();
 
-    }
-
-    // example code sourced from https://github.com/firebase/snippets-android/blob/b3263b3d1f850b65095b11bae8e24cd928103dc3/auth/app/src/main/java/com/google/firebase/quickstart/auth/EmailPasswordActivity.java#L85-L102
-    // Google's firebase example documentation
-    private void signIn(String email, String password) {
-        // [START sign_in_with_email]
-        mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
+                myRef.child("mad").addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            //updateUI(user);
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            Toast.makeText(LoginActivity.this, "Authentication failed.",
-                                    Toast.LENGTH_SHORT).show();
-                            //updateUI(null);
+                    public void onDataChange(@NonNull DataSnapshot snapshot) {
+                        // checks username and password
+                        if(snapshot.child("username").getValue(String.class).equals(username) &&
+                                snapshot.child("password").getValue(String.class).equals(password)){
+                            Intent openListActivity = new Intent(LoginActivity.this, ListActivity.class);
+                            startActivity(openListActivity);
                         }
                     }
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
                 });
-        // [END sign_in_with_email]
+            }
+        });
+
+
     }
 }
